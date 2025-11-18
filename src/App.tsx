@@ -10,24 +10,7 @@ import NotificationSystem from './components/NotificationSystem';
 // Lazy load heavy components for better performance
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 
-// Declare Telegram types
-declare global {
-  interface Window {
-    Telegram?: {
-      WebApp: {
-        initDataUnsafe: { user?: any };
-        ready: () => void;
-        expand: () => void;
-        colorScheme: string;
-        showAlert: (message: string) => void;
-        hapticFeedback?: {
-          impactOccurred: (style: 'light' | 'medium' | 'heavy') => void;
-        };
-        openTelegramLink: (url: string) => void;
-      };
-    };
-  }
-}
+// Import Telegram service for type definitions
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -254,7 +237,7 @@ function App() {
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-4">{error}</p>
           <button 
-            onClick={loadProducts}
+            onClick={() => loadProducts()}
             className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
           >
             {labels.retry}
@@ -301,7 +284,7 @@ function App() {
               {searchQuery ? labels.noProducts : 'Hozircha mahsulotlar mavjud emas'}
             </p>
             <button 
-              onClick={searchQuery ? () => handleSearch('') : loadProducts}
+              onClick={searchQuery ? () => handleSearch('') : () => loadProducts()}
               className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
             >
               {searchQuery ? 'Tozalash' : labels.refresh}
