@@ -1,51 +1,49 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Supabase configuration
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://aptvkdrqjcjpuqjakxvg.supabase.co';
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwdHZrZHJxamNqcHVxamFreHZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxMzc4MTUsImV4cCI6MjA3ODcxMzgxNX0.t6ZUC-QdY7ZtJ0hOQ3GnWUyuhMgEYbIVsWY_Sle3MgI';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://qtlmqdozxckjpgorbhfg.supabase.co';
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0bG1xZG96eGNranBnb3JiaGZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM4NDA2OTgsImV4cCI6MjA0OTQxNjY5OH0.XaHlFcLh8p9-Kj8vMsKB6lLxWwJc8bJ9VcKrRp2kc5I';
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-export interface Category {
+// Category interface removed - using product_type instead
+
+export interface Product {
   id: string;
   name: string;
   name_uz: string;
-  icon?: string;
-  order_index: number;
-  created_at: string;
-}
-
-export interface Product {
-  id: number;
-  name_uz: string;
   name_ru: string;
   name_en: string;
+  description?: string;
   description_uz?: string;
   description_ru?: string;
   description_en?: string;
   price: number;
   stock_quantity: number;
   min_order: number;
-  photo_url?: string;  // Telegram file_id
-  image_url?: string;  // Web URL
+  weight_grams?: number;
+  roast_level?: string;
+  origin_country?: string;
+  product_type: string;
+  image_url?: string;
   is_active: boolean;
   created_at: string;
-  category_id?: string;
-  
-  // Relations
-  category?: Category;
+  updated_at: string;
 }
 
 export interface Order {
-  id: number;
+  id: string;
   user_id: number;
-  product_id: number;
+  product_id: string;
+  product_name: string;
   quantity: number;
+  price: number;
   total_price: number;
-  customer_name: string;
-  customer_phone: string;
-  notes?: string;
-  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+  contact_phone: string;
+  contact_name?: string;
+  delivery_address?: string;
+  comment?: string;
+  status: 'new' | 'confirmed' | 'completed' | 'cancelled';
   created_at: string;
   updated_at: string;
   
@@ -251,10 +249,10 @@ export async function getUserOrders(userId: number): Promise<Order[]> {
 // Get order status text
 export function getOrderStatusText(status: string, language: "uz" | "ru" | "en"): string {
   const statusTexts = {
-    pending: {
-      uz: "Kutilmoqda",
-      ru: "Ожидает",
-      en: "Pending"
+    new: {
+      uz: "Yangi",
+      ru: "Новый",
+      en: "New"
     },
     confirmed: {
       uz: "Tasdiqlandi",
@@ -279,7 +277,7 @@ export function getOrderStatusText(status: string, language: "uz" | "ru" | "en")
 // Get order status color
 export function getOrderStatusColor(status: string): string {
   const colors = {
-    pending: "text-yellow-600 dark:text-yellow-400",
+    new: "text-yellow-600 dark:text-yellow-400",
     confirmed: "text-blue-600 dark:text-blue-400",
     completed: "text-green-600 dark:text-green-400",
     cancelled: "text-red-600 dark:text-red-400"
@@ -288,53 +286,18 @@ export function getOrderStatusColor(status: string): string {
   return colors[status as keyof typeof colors] || "text-gray-600 dark:text-gray-400";
 }
 
-// Get all categories
-export async function getCategories(): Promise<Category[]> {
-  try {
-    const { data, error } = await supabase
-      .from('categories')
-      .select('*')
-      .order('order_index', { ascending: true });
-    
-    if (error) {
-      console.error('Error fetching categories:', error);
-      return [];
-    }
-    
-    return data || [];
-  } catch (error) {
-    console.error('Error:', error);
-    return [];
-  }
-}
-
-// Get category name based on language
-export function getCategoryName(category: Category, language: 'uz' | 'ru' | 'en' = 'uz'): string {
-  if (language === 'uz') return category.name_uz || category.name;
-  return category.name || category.name_uz;
-}
-
-// Get products by category
-export async function getProductsByCategory(categoryId: string, language: 'uz' | 'ru' | 'en' = 'uz'): Promise<Product[]> {
+// Get products by type (coffee, accessory, etc.)
+export async function getProductsByType(productType: string): Promise<Product[]> {
   try {
     const { data, error } = await supabase
       .from('products')
-      .select(`
-        *,
-        category:categories (
-          id,
-          name,
-          name_uz,
-          icon,
-          order_index
-        )
-      `)
+      .select('*')
       .eq('is_active', true)
-      .eq('category_id', categoryId)
-      .order('id', { ascending: true });
+      .eq('product_type', productType)
+      .order('created_at', { ascending: false });
     
     if (error) {
-      console.error('Error fetching products by category:', error);
+      console.error('Error fetching products by type:', error);
       return [];
     }
     

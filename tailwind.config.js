@@ -7,18 +7,30 @@ export default {
   theme: {
     extend: {
       colors: {
-        // BPS Brand Colors
+        // Coffee Shop Brand Colors - Green & White Theme
         primary: {
-          50: '#e6f7ff',
-          100: '#bae7ff',
-          200: '#91d5ff',
-          300: '#69c0ff',
-          400: '#40a9ff',
-          500: '#0088cc', // Main Telegram blue
-          600: '#006ba3',
-          700: '#004d7a',
-          800: '#003052',
-          900: '#001529',
+          50: '#f0f9f3',
+          100: '#dcf4e3',
+          200: '#bce7cc',
+          300: '#8dd4a8',
+          400: '#56b97b',
+          500: '#2d8f47', // Main coffee green
+          600: '#22703a',
+          700: '#1e5a31',
+          800: '#1a4a29',
+          900: '#153d23',
+        },
+        coffee: {
+          50: '#f8f6f0',
+          100: '#f0ebe0',
+          200: '#e1d5c1',
+          300: '#d0bc9a',
+          400: '#c0a373',
+          500: '#8b4513', // Coffee brown
+          600: '#7a3d11',
+          700: '#68340f',
+          800: '#562b0d',
+          900: '#45220a',
         },
         telegram: {
           bg: 'var(--tg-theme-bg-color)',

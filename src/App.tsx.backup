@@ -188,33 +188,39 @@ function App() {
     switch (language) {
       case 'ru':
         return {
-          title: '☕ Кофе Каталог',
-          greeting: user ? `Привет, ${user.first_name}! ☕` : null,
-          loading: 'Загрузка кофе...',
+          title: '🏪 BPS Каталог',
+          greeting: user ? `Привет, ${user.first_name}! 👋` : null,
+          devMode: '⚠️ Режим разработки - функции Telegram отключены',
+          loading: 'Загрузка товаров...',
           error: 'Произошла ошибка',
           retry: 'Повторить',
-          noProducts: 'Кофе не найден',
-          refresh: 'Обновить'
+          noProducts: 'Товары не найдены',
+          refresh: 'Обновить',
+          devNote: 'Режим разработки: Откройте в Telegram для полного функционала'
         };
       case 'en':
         return {
-          title: '☕ Coffee Catalogue',
-          greeting: user ? `Hello, ${user.first_name}! ☕` : null,
-          loading: 'Loading coffee...',
+          title: '🏪 BPS Catalogue',
+          greeting: user ? `Hello, ${user.first_name}! 👋` : null,
+          devMode: '⚠️ Development mode - Telegram features disabled',
+          loading: 'Loading products...',
           error: 'An error occurred',
           retry: 'Retry',
-          noProducts: 'No coffee found',
-          refresh: 'Refresh'
+          noProducts: 'No products found',
+          refresh: 'Refresh',
+          devNote: 'Development Mode: Open in Telegram to see Mini App features'
         };
       default:
         return {
-          title: '☕ Kofe Katalogi',
-          greeting: user ? `Assalomu alaykum, ${user.first_name}! ☕` : null,
-          loading: 'Kofe yuklanmoqda...',
+          title: '🏪 BPS Katalog',
+          greeting: user ? `Assalomu alaykum, ${user.first_name}! 👋` : null,
+          devMode: '⚠️ Development mode - Telegram funksiyalari o\'chirilgan',
+          loading: 'Mahsulotlar yuklanmoqda...',
           error: 'Xatolik yuz berdi',
           retry: 'Qayta urinish',
-          noProducts: 'Kofe topilmadi',
-          refresh: 'Yangilash'
+          noProducts: 'Mahsulotlar topilmadi',
+          refresh: 'Yangilash',
+          devNote: 'Development Mode: Telegram Mini App funksiyalarini ko\'rish uchun Telegramda oching'
         };
     }
   };
@@ -223,16 +229,16 @@ function App() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-green-50 to-white">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-900">
         <div className="text-center max-w-sm">
-          <div className="text-6xl mb-4">☕</div>
-          <h2 className="text-xl font-semibold text-coffee-600 mb-2">
+          <div className="text-6xl mb-4">😕</div>
+          <h2 className="text-xl font-semibold text-red-600 dark:text-red-400 mb-2">
             {labels.error}
           </h2>
-          <p className="text-gray-600 mb-4">{error}</p>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">{error}</p>
           <button 
             onClick={() => loadProducts()}
-            className="bg-primary-500 hover:bg-primary-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 shadow-lg"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
           >
             {labels.retry}
           </button>
@@ -243,10 +249,10 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-white">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
-          <p className="text-coffee-600 font-medium">{labels.loading}</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">{labels.loading}</p>
         </div>
       </div>
     );
@@ -256,7 +262,7 @@ function App() {
   const hasActiveFilters = !!(filters.minPrice || filters.maxPrice || filters.inStock);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-50">
+    <div className="min-h-screen bg-white">
       {/* Header with Search and Filters */}
       <Header
         user={user}
@@ -279,7 +285,7 @@ function App() {
             </p>
             <button 
               onClick={searchQuery ? () => handleSearch('') : () => loadProducts()}
-              className="bg-primary-500 hover:bg-primary-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 shadow-lg"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
             >
               {searchQuery ? 'Tozalash' : labels.refresh}
             </button>
@@ -344,6 +350,14 @@ function App() {
         userId={user?.id}
       />
 
+      {/* Development Info */}
+      {!user && (
+        <div className="fixed bottom-4 left-4 right-4 bg-yellow-100 dark:bg-yellow-900 border border-yellow-400 rounded-lg p-3 shadow-lg">
+          <p className="text-sm text-yellow-800 dark:text-yellow-200">
+            <strong>Development Mode:</strong> {labels.devNote}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

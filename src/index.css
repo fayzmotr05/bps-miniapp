@@ -2,16 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom CSS Variables for Telegram themes */
+/* Custom CSS Variables for Coffee Shop theme */
 :root {
-  /* Fallback colors for non-Telegram environments */
-  --tg-theme-bg-color: #ffffff;
-  --tg-theme-text-color: #000000;
-  --tg-theme-hint-color: #6b7280;
-  --tg-theme-link-color: #0088cc;
-  --tg-theme-button-color: #0088cc;
+  /* Coffee Shop theme colors */
+  --tg-theme-bg-color: #f0f9f3;
+  --tg-theme-text-color: #1a4a29;
+  --tg-theme-hint-color: #8dd4a8;
+  --tg-theme-link-color: #2d8f47;
+  --tg-theme-button-color: #2d8f47;
   --tg-theme-button-text-color: #ffffff;
-  --tg-theme-secondary-bg-color: #f3f4f6;
+  --tg-theme-secondary-bg-color: #dcf4e3;
 }
 
 /* Smooth transitions for theme changes */
@@ -48,11 +48,11 @@ body {
 /* Custom component styles */
 @layer components {
   .product-card {
-    @apply bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-200;
+    @apply bg-white rounded-xl shadow-lg border border-green-100 overflow-hidden transition-all duration-200 hover:shadow-xl;
   }
   
   .product-card:hover {
-    @apply transform -translate-y-1 shadow-lg;
+    @apply transform -translate-y-1 shadow-xl border-primary-200;
   }
   
   .product-card:active {
@@ -60,11 +60,11 @@ body {
   }
   
   .btn-primary {
-    @apply bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+    @apply bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl;
   }
   
   .btn-secondary {
-    @apply bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+    @apply bg-green-50 hover:bg-green-100 text-primary-700 px-4 py-2 rounded-lg font-medium transition-colors duration-200 border border-green-200;
   }
 }
 
