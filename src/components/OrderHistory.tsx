@@ -158,9 +158,9 @@ export default function OrderHistory({ isOpen, onClose, userId, language }: Orde
                   {/* Product Info */}
                   {order.product && (
                     <div className="flex items-center space-x-3 mb-3">
-                      {order.product.photo_url && (
+                      {order.product.image_url && (
                         <img 
-                          src={order.product.photo_url}
+                          src={order.product.image_url}
                           alt={getProductName(order.product, language)}
                           className="w-12 h-12 object-cover rounded-lg"
                           onError={(e) => {
@@ -198,12 +198,12 @@ export default function OrderHistory({ isOpen, onClose, userId, language }: Orde
                   {/* Customer Info */}
                   <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
                     <div className="text-xs text-gray-500 dark:text-gray-400">
-                      <span>{order.customer_name}</span>
-                      {order.customer_phone && <span> • {order.customer_phone}</span>}
+                      <span>{order.contact_name}</span>
+                      {order.contact_phone && <span> • {order.contact_phone}</span>}
                     </div>
-                    {order.notes && (
+                    {order.comment && (
                       <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 italic">
-                        "{order.notes}"
+                        "{order.comment}"
                       </p>
                     )}
                   </div>

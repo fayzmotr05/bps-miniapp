@@ -353,8 +353,8 @@ export async function getProductAnalytics() {
 
 // Get proper image URL for display - now uses image_url field for web URLs
 export function getImageUrl(product: Product): string {
-  // Priority: image_url (web URL) > photo_url (fallback) > default
-  let imageUrl = product.image_url || product.photo_url;
+  // Priority: image_url (web URL) > default
+  let imageUrl = product.image_url;
   
   if (!imageUrl) {
     // Default fallback image
